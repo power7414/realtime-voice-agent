@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/realtime-voice-agent/static/css/main.1bf6f686.css",
+    "main.js": "/realtime-voice-agent/static/js/main.d687e322.js",
+    "index.html": "/realtime-voice-agent/index.html",
+    "main.1bf6f686.css.map": "/realtime-voice-agent/static/css/main.1bf6f686.css.map",
+    "main.d687e322.js.map": "/realtime-voice-agent/static/js/main.d687e322.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.1bf6f686.css",
+    "static/js/main.d687e322.js"
+  ]
+}
