@@ -37,30 +37,44 @@ export class MockAzureRealtimeClient extends EventEmitter<UnifiedRealtimeEventTy
     return true;
   }
 
+  /**
+   * Scripted demo conversation (offline, no API key needed).
+   * A generic insurance customer-service scenario used for screenshots and the public demo;
+   * it is not real model output.
+   */
+  private static readonly DEMO_SCRIPT: Array<{ role: "user" | "assistant"; text: string }> = [
+    { role: "user", text: "你好，我收到簡訊說這個月保費扣款失敗，是怎麼回事？" },
+    { role: "assistant", text: "您好，了解您收到扣款失敗的通知。請問您最近有換發或停用信用卡嗎？" },
+    { role: "user", text: "有，我上個月換了一張新卡。" },
+    { role: "assistant", text: "謝謝您說明。換卡後卡號或有效期限改變，系統就無法自動扣款。您可以在線上更新扣款卡片並補繳這期保費，需要我傳送連結給您嗎？" },
+    { role: "user", text: "好，麻煩你。" },
+    { role: "assistant", text: "已將補繳連結用簡訊傳到您登記的手機，完成後這期保費就會入帳。還有其他需要協助的地方嗎？" },
+  ];
+
+  private demoTimers: ReturnType<typeof setTimeout>[] = [];
+
   private simulateConversation() {
-    setTimeout(() => {
-      console.log("🗣️ [Mock Azure API] 模擬使用者語音輸入...");
-      this.emit("input_transcription", {
-        text: "你好！這是一條 Azure Realtime 語音測試訊息。",
-        isFinal: true
-      });
-
-      setTimeout(() => {
-        console.log("🤖 [Mock Azure API] 模擬 Azure AI 語音回覆...");
-        this.emit("output_transcription", {
-          text: "你好！我是 Mock Azure AI，這是我自動回覆的語音紀錄！",
-          isFinal: true
-        });
-
-        this.emit("turncomplete");
-      }, 700);
-    }, 500);
+    let t = 600;
+    for (const turn of MockAzureRealtimeClient.DEMO_SCRIPT) {
+      this.demoTimers.push(setTimeout(() => {
+        if (this._status !== "connected") return;
+        if (turn.role === "user") {
+          this.emit("input_transcription", { text: turn.text, isFinal: true });
+        } else {
+          this.emit("output_transcription", { text: turn.text, isFinal: true });
+          this.emit("turncomplete");
+        }
+      }, t));
+      t += turn.role === "user" ? 1200 : 2200;
+    }
   }
 
   disconnect(): void {
     console.log("🔌 [Mock Azure API] 模擬連線已關閉");
     this._status = "disconnected";
     this._setupComplete = false;
+    this.demoTimers.forEach(clearTimeout);
+    this.demoTimers = [];
     this.emit("close", new CloseEvent("close"));
   }
 

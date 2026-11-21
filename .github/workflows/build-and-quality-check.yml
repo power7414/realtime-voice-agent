@@ -1,7 +1,6 @@
 # Build and Quality Check Workflow
 # 
-# Runs basic build and quality checks after test system refactor
-# Tests were removed as part of architecture simplification
+# Lint, type-check, unit tests and production build
 
 name: Build and Quality Check
 
@@ -38,7 +37,10 @@ jobs:
     - name: Run type checking
       run: npm run type-check
 
-    - name: Build application
+    - name: Run unit tests
+      run: CI=true npm test
+
+    - name: Build
       run: npm run build
       env:
         CI: true

@@ -1,132 +1,48 @@
-# Multimodal Realtime Voice Assistant Platform
+# Realtime Voice Customer-Service Agent
 
-<p align="center">
-  <b>Enterprise Multimodal Voice Assistant Prototype</b><br>
-  <i>Cathay Life Insurance GenAI Data Science Internship</i>
-</p>
+A browser prototype of a voice customer-service agent, built during my GenAI internship at Cathay Life Insurance (Jul.–Dec. 2025).
+One React + TypeScript interface runs on top of two realtime speech APIs — **Google Gemini Live** and **Azure OpenAI Realtime** — plus a speech-to-text → LLM → text-to-speech fallback.
 
-<p align="center">
-  <a href="README.md"><b>English</b></a> | <a href="README_zh.md"><b>繁體中文</b></a>
-</p>
+[English](README.md) | [繁體中文](README_zh.md)
 
-<p align="center">
-  <img src="https://img.shields.io/badge/React-18.3-61DAFB?logo=react&logoColor=black" alt="React 18" />
-  <img src="https://img.shields.io/badge/TypeScript-5.6-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
-  <img src="https://img.shields.io/badge/Google%20Gemini-Live%20API-4285F4?logo=google&logoColor=white" alt="Gemini Live API" />
-  <img src="https://img.shields.io/badge/Azure%20OpenAI-Realtime%20API-0078D4?logo=microsoftazure&logoColor=white" alt="Azure Realtime" />
-  <img src="https://img.shields.io/badge/Web%20Audio-AudioWorklet-FF6B6B" alt="AudioWorklet" />
-  <img src="https://img.shields.io/badge/Tests-25%20Passed-success" alt="Tests" />
-</p>
+![Sample call: live transcript of a premium-payment-failure conversation](docs/assets/app-demo.jpg)
 
----
+*Sample call in the offline demo mode (scripted conversation in Chinese). The internal business prompt, intent codes and real conversations from the internship are not part of this repository.*
 
-A high-performance, browser-based **multimodal realtime conversational platform** built with **React 18** and **TypeScript**. Designed with a **Unified Realtime API Architecture**, the system seamlessly bridges **Google Gemini Live API** (ultra-low latency bidirectional audio streaming) and **Azure OpenAI Realtime API**, enabling natural, low-latency voice interactions with intelligent domain intent routing.
+## What it does
+- **Three conversation modes behind one UI**: Gemini Live, Azure OpenAI Realtime, and STT → chat model → TTS. A mode is chosen per chat room.
+- **Streaming audio both ways**: microphone capture and playback run in AudioWorklets (`src/audio/`), with a volume meter driving the voice animation.
+- **Interruptions**: when the model reports that the user has started speaking, queued playback is stopped (`src/audio/streamer.ts`, `src/hooks/use-live-api.ts`).
+- **Live transcripts and chat rooms**: each room keeps its own transcript, stored in the browser (localStorage, `src/storage/`) and exportable as text.
+- **Configurable persona**: system prompt and tone are set in the settings panel (Zustand store), so prompts can be iterated without rebuilding.
+- **Offline demo mode**: with no API keys (or `REACT_APP_USE_MOCK=true`) the Azure Realtime and STT-TTS modes use mock clients (`src/api/mock-*.ts`) that play a scripted conversation, so the UI can be tried at zero cost.
 
----
-
-## 🎬 Live Demo Showcase
-
-
-* **Business Scenario**: Simulates an insurance AI customer-service representative handling a premium deduction failure, conducting multi-turn intent resolution, clarifying credit card replacement status, and dynamically dispatching online self-service SMS links.
-* **Demo recording**: available on request (internal conversation content is not published).
-* **Application Overview**:
-
-<p align="center">
-  <img src="docs/assets/app-ui-overview.jpg" alt="Platform UI Overview" width="90%" />
-</p>
-
----
-
-## 🎯 Key Architectural Highlights
-
-### 1. Unified Realtime API Architecture (`useUnifiedRealtime`)
-* **Vendor-Agnostic Audio Streaming**: Abstracted WebSocket communication protocols into a single client interface, allowing instant switching between **Google Gemini Live API** (sub-100ms bidirectional audio streaming) and **Azure OpenAI Realtime API** (enterprise stability).
-* **Robust Session State Machine**: Handles auto-reconnects, session resumption, and real-time **barge-in interruption detection**.
-
-### 2. Low-Latency Web Audio Pipeline (AudioWorklet & Streamer)
-* **Custom AudioStreamer Engine**: Eliminates browser audio buffer stutter and jitter using dynamic chunk scheduling and queued playback.
-* **Dynamic Waveform Visualization (AudioPulse)**: Leverages custom AudioWorklet nodes (`vol-meter.ts`) to compute real-time decibels directly off the audio thread, powering a fluid voice ripple effect.
-* **AudioContext Lifecycle Guards**: Singleton audio manager with error boundaries to permanently prevent browser `InvalidStateError` loops during rapid connect/disconnect cycles.
-
-### 3. Dynamic Prompt Configuration System
-* **Configurable System Prompt**: Persona and tone are set from the in-app settings panel (persisted in the Zustand store), so prompts can be iterated without rebuilding. The internal business prompt used during the internship is not included in this repository.
-
-### 4. Client-Side Session Management & Persistence
-* **Multi-Room Workspaces**: Allows managing multiple isolated customer conversation threads.
-* **IndexedDB Local Persistence**: Stores full bidirectional transcripts, timestamps, and connection telemetry for offline session replay and state recovery.
-
----
-
-## 🏗️ System Architecture
-
+## Code map
 ```text
 src/
-├── api/                 # API Client Layer (Gemini Live & Azure Realtime WebSockets, Mock Clients)
-├── audio/               # Web Audio Engine (Streamer, Recorder, AudioWorklets, Resamplers)
-├── hooks/               # React Custom Hooks (useLiveAPI, useUnifiedRealtime, useConversationController)
-├── stores/              # State Management via Zustand (chat-store-persistent, settings-store)
-├── storage/             # Client-side persistence layer (IndexedDB & SimpleStorage)
-├── utils/               # AudioContext Singleton, Prompt Loader, Message Factory
-├── components/          # UI Components (AudioPulse waveform, ChatSidebar, TranscriptPanel)
-└── App.tsx              # Application Root
+├── api/         Gemini Live and Azure Realtime WebSocket clients, chat/STT/TTS clients, mock clients
+├── audio/       recorder, streamer, AudioWorklets (audio processing, volume meter)
+├── hooks/       use-live-api, use-azure-realtime, use-stt-conversation, use-conversation-controller, …
+├── stores/      Zustand stores (chat rooms, settings)
+├── storage/     browser persistence (localStorage)
+└── components/  layout, chat sidebar, transcript panel, settings and mode picker
 ```
 
----
-
-## 🚀 Quick Start
-
-### Prerequisites
-* Node.js 18+ or 20+
-* npm
-
-### 1. Installation
+## Run it
 ```bash
 npm install
+cp .env.example .env      # optional: leave empty for the offline demo
+npm start                 # or: npm run start-https  (microphone access is easier over HTTPS)
 ```
+Open http://localhost:3000, click **New Chat**, pick a mode, then press the connect button.
 
-### 2. Environment Variables
-Copy the template to create `.env`:
+> Create React App embeds `REACT_APP_*` values in the built JavaScript. Use real keys only for local runs; do not publish a build that contains them.
+
+## Tests
 ```bash
-cp .env.example .env
-```
-Fill in your Google Gemini API Key (obtainable for free from [Google AI Studio](https://aistudio.google.com/)):
-```env
-REACT_APP_GEMINI_API_KEY=your_gemini_api_key_here
-```
-*(Optional: Provide Azure OpenAI Realtime endpoint and key if testing Azure mode).*
-
-### 3. Start Development Server
-> [!NOTE]
-> Modern browsers require microphone permissions. Using HTTPS mode is recommended to ensure seamless Web Audio API initialization.
-
-```bash
-# Standard HTTP Start
-npm start
-
-# Or HTTPS Start (Recommended)
-npm run start-https
-```
-Open your browser at `https://localhost:3000`.
-
----
-
-## 🧪 Quality Assurance & Test Suites
-
-The codebase is protected by strict TypeScript typing and automated unit tests:
-
-```bash
-# 1. TypeScript Static Type Check (0 errors)
-npm run type-check
-
-# 2. Automated Unit Tests (8 Test Suites / 25 Tests Passing)
-npm test
-
-# 3. Production Build Validation
+npm test          # 8 suites, 25 tests
 npm run build
 ```
 
----
-
-## 📂 In-Depth Technical Specification
-
-Architecture details are summarized in the sections above; the source in `src/` is organized by `api/`, `audio/`, `hooks/`, and `stores/`.
+## My part
+I designed and built this prototype: the unified client layer over the two realtime APIs, the audio pipeline, and the chat-room / transcript UI. During the internship it was connected to internal service APIs for intent recognition and routing and used by the team as a testing platform; those integrations are not included here.
