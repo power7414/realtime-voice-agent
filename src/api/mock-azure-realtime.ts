@@ -43,12 +43,12 @@ export class MockAzureRealtimeClient extends EventEmitter<UnifiedRealtimeEventTy
    * it is not real model output.
    */
   private static readonly DEMO_SCRIPT: Array<{ role: "user" | "assistant"; text: string }> = [
-    { role: "user", text: "你好，我收到簡訊說這個月保費扣款失敗，是怎麼回事？" },
-    { role: "assistant", text: "您好，了解您收到扣款失敗的通知。請問您最近有換發或停用信用卡嗎？" },
-    { role: "user", text: "有，我上個月換了一張新卡。" },
-    { role: "assistant", text: "謝謝您說明。換卡後卡號或有效期限改變，系統就無法自動扣款。您可以在線上更新扣款卡片並補繳這期保費，需要我傳送連結給您嗎？" },
-    { role: "user", text: "好，麻煩你。" },
-    { role: "assistant", text: "已將補繳連結用簡訊傳到您登記的手機，完成後這期保費就會入帳。還有其他需要協助的地方嗎？" },
+    { role: "user", text: "Hi, I got a text saying this month's premium payment failed. What happened?" },
+    { role: "assistant", text: "I'm sorry about that. Have you recently replaced or cancelled the credit card used for your premium?" },
+    { role: "user", text: "Yes, I got a new card last month." },
+    { role: "assistant", text: "Thanks. When the card number or expiry date changes, the automatic payment can't go through. You can update your card and pay this month's premium online. Would you like me to send you the link?" },
+    { role: "user", text: "Yes, please." },
+    { role: "assistant", text: "Done. I've texted the payment link to your registered phone number; once you finish, this month's premium will be credited. Is there anything else I can help with?" },
   ];
 
   private demoTimers: ReturnType<typeof setTimeout>[] = [];

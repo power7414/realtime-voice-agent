@@ -7,7 +7,7 @@ One React + TypeScript interface runs on top of two realtime speech APIs — **G
 
 ![Demo: start a chat, pick OpenAI Realtime, connect; the transcript fills in turn by turn](docs/assets/demo.gif)
 
-*Sample call in the offline demo mode (scripted conversation in Chinese). The internal business prompt, intent codes and real conversations from the internship are not part of this repository.*
+*Sample call in the offline demo mode (scripted conversation, shown in English; the system used in the internship served Mandarin-speaking customers). The internal business prompt, intent codes and real conversations from the internship are not part of this repository.*
 
 ## What it does
 - **Three conversation modes behind one UI**: Gemini Live, Azure OpenAI Realtime, and STT → chat model → TTS. A mode is chosen per chat room.

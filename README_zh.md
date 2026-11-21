@@ -7,7 +7,7 @@
 
 ![示範：開新對話、選 OpenAI Realtime、連線，逐字稿逐輪出現](docs/assets/demo.gif)
 
-*離線示範模式的範例通話（預先寫好的對話）。實習期間的內部業務 prompt、意圖代碼與真實對話都不在本 repo。*
+*離線示範模式的範例通話（預先寫好的對話，以英文呈現；實習時的系統服務的是說中文的客戶）。實習期間的內部業務 prompt、意圖代碼與真實對話都不在本 repo。*
 
 ## 功能
 - **一個介面、三種對話模式**：Gemini Live、Azure OpenAI Realtime、STT → 對話模型 → TTS，每個聊天室各自選擇。
