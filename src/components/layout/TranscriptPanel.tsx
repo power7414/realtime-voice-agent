@@ -84,7 +84,7 @@ export const TranscriptPanel: React.FC<TranscriptPanelProps> = ({
             >
               <div className={`message-icon ${msg.type === 'user' ? 'user' : 'assistant'}`}>
                 <img
-                  src={msg.type === 'user' ? '/images/avatars/user-avatar.png' : '/images/avatars/ai-avatar.png'}
+                  src={msg.type === 'user' ? `${process.env.PUBLIC_URL}/images/avatars/user-avatar.png` : `${process.env.PUBLIC_URL}/images/avatars/ai-avatar.png`}
                   alt={msg.type === 'user' ? 'User Avatar' : 'AI Avatar'}
                   className="avatar-image"
                 />

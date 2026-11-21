@@ -3,6 +3,8 @@
 A browser prototype of a voice customer-service agent, built during my GenAI internship at Cathay Life Insurance (Jul.–Dec. 2025).
 One React + TypeScript interface runs on top of two realtime speech APIs — **Google Gemini Live** and **Azure OpenAI Realtime** — plus a speech-to-text → LLM → text-to-speech fallback.
 
+**Try the demo:** https://power7414.github.io/realtime-voice-agent/ (offline demo mode — no AI model is called)
+
 [English](README.md) | [繁體中文](README_zh.md)
 
 ![Demo: start a chat, pick OpenAI Realtime, connect; the transcript fills in turn by turn](docs/assets/demo.gif)
@@ -37,6 +39,11 @@ npm start                 # or: npm run start-https  (microphone access is easie
 Open http://localhost:3000, click **New Chat**, pick a mode, then press the connect button.
 
 > Create React App embeds `REACT_APP_*` values in the built JavaScript. Use real keys only for local runs; do not publish a build that contains them.
+
+## Demo build
+```bash
+npm run build:demo   # offline demo for GitHub Pages: mock clients only, served under /realtime-voice-agent
+```
 
 ## Tests
 ```bash

@@ -1,5 +1,6 @@
 import { EventEmitter } from "eventemitter3";
 import { UnifiedRealtimeEventTypes } from "./azure-realtime";
+import { playDemoScript } from "./demo-script";
 
 /**
  * MockAzureRealtimeClient
@@ -42,39 +43,22 @@ export class MockAzureRealtimeClient extends EventEmitter<UnifiedRealtimeEventTy
    * A generic insurance customer-service scenario used for screenshots and the public demo;
    * it is not real model output.
    */
-  private static readonly DEMO_SCRIPT: Array<{ role: "user" | "assistant"; text: string }> = [
-    { role: "user", text: "Hi, I got a text saying this month's premium payment failed. What happened?" },
-    { role: "assistant", text: "I'm sorry about that. Have you recently replaced or cancelled the credit card used for your premium?" },
-    { role: "user", text: "Yes, I got a new card last month." },
-    { role: "assistant", text: "Thanks. When the card number or expiry date changes, the automatic payment can't go through. You can update your card and pay this month's premium online. Would you like me to send you the link?" },
-    { role: "user", text: "Yes, please." },
-    { role: "assistant", text: "Done. I've texted the payment link to your registered phone number; once you finish, this month's premium will be credited. Is there anything else I can help with?" },
-  ];
 
-  private demoTimers: ReturnType<typeof setTimeout>[] = [];
+  private cancelDemo: () => void = () => {};
 
   private simulateConversation() {
-    let t = 600;
-    for (const turn of MockAzureRealtimeClient.DEMO_SCRIPT) {
-      this.demoTimers.push(setTimeout(() => {
-        if (this._status !== "connected") return;
-        if (turn.role === "user") {
-          this.emit("input_transcription", { text: turn.text, isFinal: true });
-        } else {
-          this.emit("output_transcription", { text: turn.text, isFinal: true });
-          this.emit("turncomplete");
-        }
-      }, t));
-      t += turn.role === "user" ? 1200 : 2200;
-    }
+    this.cancelDemo = playDemoScript(
+      (text) => this.emit("input_transcription", { text, isFinal: true }),
+      (text) => { this.emit("output_transcription", { text, isFinal: true }); this.emit("turncomplete"); },
+      () => this._status === "connected",
+    );
   }
 
   disconnect(): void {
     console.log("🔌 [Mock Azure API] 模擬連線已關閉");
     this._status = "disconnected";
     this._setupComplete = false;
-    this.demoTimers.forEach(clearTimeout);
-    this.demoTimers = [];
+    this.cancelDemo();
     this.emit("close", new CloseEvent("close"));
   }
 

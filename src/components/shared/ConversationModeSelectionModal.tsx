@@ -24,19 +24,19 @@ const MODE_OPTIONS: ModeOption[] = [
   {
     type: 'live-api',
     title: 'Gemini Live',
-    iconSrc: '/images/mode-icons/live-api.png',
+    iconSrc: `${process.env.PUBLIC_URL}/images/mode-icons/live-api.png`,
     colorClass: 'sky'
   },
   {
     type: 'azure-realtime',
     title: 'OpenAI Realtime',
-    iconSrc: '/images/mode-icons/openai.svg',
+    iconSrc: `${process.env.PUBLIC_URL}/images/mode-icons/openai.svg`,
     colorClass: 'sky'
   },
   {
     type: 'stt-tts',
     title: 'STT-TTS',
-    iconSrc: '/images/mode-icons/openai.svg',
+    iconSrc: `${process.env.PUBLIC_URL}/images/mode-icons/openai.svg`,
     colorClass: 'sky'
   }
 ];

@@ -91,6 +91,12 @@ function AppContent() {
 
   return (
     <div className="app">
+      {process.env.REACT_APP_DEMO === 'true' && (
+        <div className="demo-banner" role="note">
+          Demo mode: no AI model is called. Click <b>New Chat</b>, pick any mode and press the connect button (in STT-TTS mode, press the mic) to play a scripted conversation.{' '}
+          <a href="https://github.com/power7414/realtime-voice-agent">Source on GitHub</a>
+        </div>
+      )}
       <ErrorBoundary>
         <Header 
           onHelpClick={() => console.log('Help clicked')}

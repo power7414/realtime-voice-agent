@@ -5,6 +5,7 @@
  */
 
 import { useState, useCallback, useRef, useEffect } from 'react';
+import { DEMO_SCRIPT } from '../api/demo-script';
 import { STTVoiceProcessor, STTVoiceProcessorConfig } from '../audio/processor';
 import { AudioRecorder } from '../audio/recorder';
 import { useChatManager } from './use-chat-manager';
@@ -144,6 +145,7 @@ export function useSTTConversation(
   
   // Services
   const voiceProcessorRef = useRef<STTVoiceProcessor | null>(null);
+  const demoTurnRef = useRef(0);
   const ttsPlayerRef = useRef<TTSPlayer>(
     new TTSPlayer({
       sampleRate: 24000,
@@ -424,8 +426,10 @@ export function useSTTConversation(
       
       setTimeout(() => {
         setIsProcessingVoice(false);
-        const userText = "你好！這是一條 STT-TTS 語音測試訊息。";
-        const aiText = "你好！我是 Mock STT-TTS 助理，這是我自動產生的回覆紀錄！";
+        const i = (demoTurnRef.current * 2) % DEMO_SCRIPT.length;
+        demoTurnRef.current += 1;
+        const userText = DEMO_SCRIPT[i].text;
+        const aiText = DEMO_SCRIPT[i + 1]?.text ?? '';
         
         if (currentConfig.onUserTranscript) {
           currentConfig.onUserTranscript(userText);

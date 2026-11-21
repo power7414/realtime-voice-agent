@@ -3,6 +3,8 @@
 在國泰人壽 GenAI 實習期間（2025 年 7–12 月）做的瀏覽器版語音客服原型。
 同一套 React + TypeScript 介面，可以切換 **Google Gemini Live**、**Azure OpenAI Realtime** 兩種即時語音 API，以及「語音轉文字 → LLM → 文字轉語音」的備用模式。
 
+**試玩：** https://power7414.github.io/realtime-voice-agent/ （離線示範模式，不會呼叫任何 AI 模型）
+
 [English](README.md) | [繁體中文](README_zh.md)
 
 ![示範：開新對話、選 OpenAI Realtime、連線，逐字稿逐輪出現](docs/assets/demo.gif)
@@ -26,6 +28,11 @@ npm start                 # 或 npm run start-https（HTTPS 下麥克風權限�
 打開 http://localhost:3000，按 **New Chat**、選模式，再按連線按鈕。
 
 > Create React App 會把 `REACT_APP_*` 寫進建置後的 JavaScript。真的金鑰只在本機用，不要把含金鑰的建置版放上公開網址。
+
+## 示範版建置
+```bash
+npm run build:demo   # GitHub Pages 用的離線示範版：只用模擬客戶端，網址路徑 /realtime-voice-agent
+```
 
 ## 測試
 ```bash

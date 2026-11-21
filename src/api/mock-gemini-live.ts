@@ -1,4 +1,5 @@
 import { EventEmitter } from 'eventemitter3';
+import { playDemoScript } from './demo-script';
 import { LiveClientEventTypes } from './gemini-live';
 
 /**
@@ -39,24 +40,14 @@ export class MockGenAILiveClient extends EventEmitter<LiveClientEventTypes> {
     });
   }
 
+  private cancelDemo: () => void = () => {};
+
   private simulateConversation() {
-    setTimeout(() => {
-      console.log("🗣️ [Mock API] 模擬使用者說話中...");
-      this.emit("input_transcription", {
-        text: "你好！這是一條 Gemini Live 語音測試訊息。",
-        isFinal: true
-      });
-
-      setTimeout(() => {
-        console.log("🤖 [Mock API] 模擬 AI 語音回覆中...");
-        this.emit("output_transcription", {
-          text: "你好！我是 Mock Gemini AI，這是我自動回覆的語音紀錄！",
-          isFinal: true
-        });
-
-        this.emit("turncomplete");
-      }, 700);
-    }, 500);
+    this.cancelDemo = playDemoScript(
+      (text) => this.emit("input_transcription", { text, isFinal: true }),
+      (text) => { this.emit("output_transcription", { text, isFinal: true }); this.emit("turncomplete"); },
+      () => this._status === 'connected',
+    );
   }
 
   /**
@@ -106,6 +97,7 @@ export class MockGenAILiveClient extends EventEmitter<LiveClientEventTypes> {
    */
   disconnect() {
     this._status = 'disconnected';
+    this.cancelDemo();
     console.log('🔌 [Mock API] 模擬連線已關閉');
     this.emit('close', new CloseEvent('close'));
   }

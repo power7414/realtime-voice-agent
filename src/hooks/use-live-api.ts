@@ -69,7 +69,8 @@ export function useLiveAPI(options: LiveClientOptions & {
     console.log('🌐 [useLiveAPI] 檢測到有效 Key，啟動真實 Google GenAILiveClient 伺服器連線');
     const newClient = new GenAILiveClient(clientOptions);
     return newClient;
-  }, [clientOptions, isEnabled]); // 只監聽關鍵配置
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [clientOptions.apiKey, isEnabled]); // clientOptions is a new object every render; key + enabled decide the client
 
   // 使用統一的音頻串流器 Hook
   const { audioStreamer: audioStreamerInstance, volume, isInitialized: audioInitialized } = useAudioStreamer({

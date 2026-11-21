@@ -84,19 +84,19 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       name: 'Gemini Live',
       description: 'Bidirectional streaming voice powered by Google Gemini Live API',
       color: '#4CAF50',
-      icon: '/images/mode-icons/live-api.png'
+      icon: `${process.env.PUBLIC_URL}/images/mode-icons/live-api.png`
     },
     'azure-realtime': {
       name: 'OpenAI Realtime',
       description: 'Enterprise voice streaming powered by Azure OpenAI Realtime API',
       color: '#2196F3',
-      icon: '/images/mode-icons/openai.svg'
+      icon: `${process.env.PUBLIC_URL}/images/mode-icons/openai.svg`
     },
     'stt-tts': {
       name: 'STT-TTS',
       description: 'Cascaded Speech-to-Text and Text-to-Speech mode',
       color: '#FF9800',
-      icon: '/images/mode-icons/stt-tts.svg'
+      icon: `${process.env.PUBLIC_URL}/images/mode-icons/stt-tts.svg`
     }
   } as const), []);
   
@@ -151,7 +151,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
     setIsPlayingPreview(voiceValue);
     
     try {
-      const audio = new Audio(`/voice-samples/${voiceValue}.wav`);
+      const audio = new Audio(`${process.env.PUBLIC_URL}/voice-samples/${voiceValue}.wav`);
       audio.volume = 0.8;
       audio.preload = 'auto';
       

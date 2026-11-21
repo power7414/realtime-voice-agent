@@ -127,3 +127,15 @@ input, textarea, select {
     --text-secondary: #ffffff;
   }
 }
+.demo-banner {
+  flex: 0 0 auto;
+  padding: 6px 16px;
+  background: #fff7d6;
+  border-bottom: 1px solid #f0e2a8;
+  color: #3d3a2a;
+  font-size: 13px;
+  line-height: 1.5;
+  text-align: center;
+
+  a { color: #0b6e4f; font-weight: 600; }
+}
