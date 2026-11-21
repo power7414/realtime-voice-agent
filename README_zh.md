@@ -5,7 +5,7 @@
 
 [English](README.md) | [繁體中文](README_zh.md)
 
-![範例通話：保費扣款失敗的即時逐字稿](docs/assets/app-demo.jpg)
+![示範：開新對話、選 OpenAI Realtime、連線，逐字稿逐輪出現](docs/assets/demo.gif)
 
 *離線示範模式的範例通話（預先寫好的對話）。實習期間的內部業務 prompt、意圖代碼與真實對話都不在本 repo。*
 

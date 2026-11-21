@@ -5,7 +5,7 @@ One React + TypeScript interface runs on top of two realtime speech APIs — **G
 
 [English](README.md) | [繁體中文](README_zh.md)
 
-![Sample call: live transcript of a premium-payment-failure conversation](docs/assets/app-demo.jpg)
+![Demo: start a chat, pick OpenAI Realtime, connect; the transcript fills in turn by turn](docs/assets/demo.gif)
 
 *Sample call in the offline demo mode (scripted conversation in Chinese). The internal business prompt, intent codes and real conversations from the internship are not part of this repository.*
 
