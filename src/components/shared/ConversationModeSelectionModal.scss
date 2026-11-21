@@ -1,0 +1,314 @@
+/**
+ * ConversationModeSelectionModal 樣式
+ * 參考 gemini-multimodal-live-demo 的設計風格
+ */
+
+.conversation-mode-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+}
+
+.conversation-mode-modal {
+  background: var(--bg-primary, #ffffff);
+  border-radius: 16px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.12),
+    0 0 0 1px rgba(0, 0, 0, 0.05);
+  max-width: 800px;
+  max-height: 90vh;
+  width: 90vw;
+  overflow: hidden;
+  animation: scaleIn 0.2s ease-out;
+
+  @keyframes scaleIn {
+    from { 
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to { 
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+}
+
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 32px;
+  border-bottom: 1px solid var(--border-color, #e5e7eb);
+
+  .modal-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--text-primary, #111827);
+    margin: 0;
+  }
+
+  .modal-close-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border: none;
+    background: none;
+    border-radius: 8px;
+    color: var(--text-secondary, #6b7280);
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--bg-secondary, #f3f4f6);
+      color: var(--text-primary, #111827);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .material-symbols-outlined {
+      font-size: 20px;
+    }
+  }
+}
+
+.modal-body {
+  padding: 32px;
+  overflow-y: auto;
+
+  .modal-description {
+    font-size: 16px;
+    color: var(--text-secondary, #6b7280);
+    margin: 0 0 32px 0;
+    line-height: 1.5;
+    text-align: center;
+  }
+
+  .mode-options-grid {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+
+    @media (max-width: 768px) {
+      flex-direction: column;
+      gap: 12px;
+    }
+  }
+}
+
+.mode-option-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 24px 16px;
+  border: 2px solid transparent;
+  border-radius: 16px;
+  background: var(--bg-secondary, #f8fafc);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  min-width: 140px;
+  flex: 1;
+  
+  &:not(.disabled):hover {
+    transform: translateY(-2px);
+    box-shadow:
+      0 8px 16px rgba(0, 0, 0, 0.1),
+      0 0 0 2px var(--accent-color, #3b82f6);
+
+    .mode-icon-container {
+      transform: scale(1.05);
+    }
+  }
+
+  &:not(.disabled):active {
+    transform: translateY(-2px);
+  }
+
+  &.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    
+    &::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.1);
+      z-index: 1;
+    }
+  }
+
+  // 顏色主題
+  &.sky {
+    --theme-bg: #e0f2fe;
+    --theme-text: #0369a1;
+    --theme-border: #0284c7;
+    
+    &:not(.disabled):hover {
+      background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+      box-shadow: 
+        0 12px 24px rgba(3, 105, 161, 0.15),
+        0 0 0 2px var(--theme-border);
+    }
+  }
+
+  &.blue {
+    --theme-bg: #dbeafe;
+    --theme-text: #1d4ed8;
+    --theme-border: #2563eb;
+    
+    &:not(.disabled):hover {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      box-shadow: 
+        0 12px 24px rgba(29, 78, 216, 0.15),
+        0 0 0 2px var(--theme-border);
+    }
+  }
+
+  &.green {
+    --theme-bg: #dcfce7;
+    --theme-text: #15803d;
+    --theme-border: #16a34a;
+    
+    &:not(.disabled):hover {
+      background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+      box-shadow: 
+        0 12px 24px rgba(21, 128, 61, 0.15),
+        0 0 0 2px var(--theme-border);
+    }
+  }
+
+  .mode-icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    transition: all 0.3s ease;
+
+    .mode-icon-image {
+      width: 48px;
+      height: 48px;
+      object-fit: contain;
+    }
+  }
+
+  .mode-content {
+    flex: 1;
+
+    .mode-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text-primary, #111827);
+      margin: 0;
+    }
+  }
+}
+
+// 顏色工具類
+.bg-sky-100 { background-color: #e0f2fe; }
+.text-sky-400 { color: #0ea5e9; }
+.bg-blue-100 { background-color: #dbeafe; }
+.text-blue-400 { color: #60a5fa; }
+.bg-green-100 { background-color: #dcfce7; }
+.text-green-600 { color: #16a34a; }
+
+.modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  padding: 24px 32px;
+  border-top: 1px solid var(--border-color, #e5e7eb);
+
+  .cancel-button {
+    padding: 12px 24px;
+    border: 1px solid var(--border-color, #e5e7eb);
+    background: var(--bg-primary, #ffffff);
+    color: var(--text-secondary, #6b7280);
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover:not(:disabled) {
+      background: var(--bg-secondary, #f3f4f6);
+      color: var(--text-primary, #111827);
+    }
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  }
+}
+
+// 深色主題支援
+@media (prefers-color-scheme: dark) {
+  .conversation-mode-modal {
+    background: var(--bg-primary, #1f2937);
+    
+    .modal-header {
+      border-bottom-color: var(--border-color, #374151);
+      
+      .modal-title {
+        color: var(--text-primary, #f9fafb);
+      }
+    }
+
+    .modal-body {
+      .modal-description {
+        color: var(--text-secondary, #d1d5db);
+      }
+    }
+
+    .mode-option-card {
+      background: var(--bg-secondary, #374151);
+      color: var(--text-primary, #f9fafb);
+
+      .mode-title {
+        color: var(--text-primary, #f9fafb);
+      }
+
+      .mode-description {
+        color: var(--text-secondary, #d1d5db);
+      }
+    }
+
+    .modal-footer {
+      border-top-color: var(--border-color, #374151);
+      
+      .cancel-button {
+        background: var(--bg-secondary, #374151);
+        border-color: var(--border-color, #4b5563);
+        color: var(--text-secondary, #d1d5db);
+
+        &:hover:not(:disabled) {
+          background: var(--bg-tertiary, #4b5563);
+          color: var(--text-primary, #f9fafb);
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,57 @@
+version: '3.8'
+
+services:
+  # 多模態 AI 對話平台
+  conversation-platform:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      target: production
+    ports:
+      - "3000:8080"
+    environment:
+      # React 環境變數 (需要 REACT_APP_ 前綴)
+      - REACT_APP_GEMINI_API_KEY=${REACT_APP_GEMINI_API_KEY}
+      - REACT_APP_AZURE_OPENAI_KEY=${REACT_APP_AZURE_OPENAI_KEY}
+      - REACT_APP_AZURE_OPENAI_ENDPOINT=${REACT_APP_AZURE_OPENAI_ENDPOINT}
+      - REACT_APP_AZURE_SPEECH_KEY=${REACT_APP_AZURE_SPEECH_KEY}
+      - REACT_APP_AZURE_SPEECH_REGION=${REACT_APP_AZURE_SPEECH_REGION}
+
+      # 應用程式設定
+      - NODE_ENV=production
+
+    restart: unless-stopped
+
+    # 健康檢查
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # 開發模式 (可選)
+  conversation-platform-dev:
+    build:
+      context: ../../
+      dockerfile: deployment/docker/Dockerfile
+      target: builder
+    ports:
+      - "3001:3000"
+    environment:
+      - REACT_APP_GEMINI_API_KEY=${REACT_APP_GEMINI_API_KEY}
+      - REACT_APP_AZURE_OPENAI_KEY=${REACT_APP_AZURE_OPENAI_KEY}
+      - REACT_APP_AZURE_OPENAI_ENDPOINT=${REACT_APP_AZURE_OPENAI_ENDPOINT}
+      - REACT_APP_AZURE_SPEECH_KEY=${REACT_APP_AZURE_SPEECH_KEY}
+      - REACT_APP_AZURE_SPEECH_REGION=${REACT_APP_AZURE_SPEECH_REGION}
+      - NODE_ENV=development
+    volumes:
+      - ../../:/app
+      - /app/node_modules
+    command: npm start
+    profiles:
+      - dev
+
+networks:
+  default:
+    name: conversation-platform-network

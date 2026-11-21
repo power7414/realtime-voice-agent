@@ -1,0 +1,744 @@
+@import '../../styles/variables.scss';
+
+.settings-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.settings-modal {
+  background: var(--bg-primary);
+  border-radius: $radius-lg;
+  box-shadow: var(--shadow);
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;
+  overflow: hidden;
+  animation: slideUp 0.3s ease-out;
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: $spacing-lg;
+    border-bottom: 1px solid var(--border-color);
+    
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      gap: $spacing-xs;
+      
+      h2 {
+        margin: 0;
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--text-primary);
+      }
+      
+      .mode-indicator {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
+        
+        .mode-icon {
+          font-size: 1.2rem;
+          width: 24px;
+          height: 24px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+
+          img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+          }
+        }
+        
+        .mode-info {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          
+          .mode-name {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1;
+          }
+          
+          .mode-description {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            line-height: 1.2;
+          }
+        }
+      }
+    }
+  }
+
+  &__close {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: $spacing-xs;
+    border-radius: $radius-sm;
+    transition: var(--transition);
+
+    &:hover {
+      background: var(--bg-secondary);
+      color: var(--text-primary);
+    }
+  }
+
+  &__content {
+    padding: $spacing-lg;
+    max-height: 60vh;
+    overflow-y: auto;
+  }
+
+  &__footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: $spacing-lg;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    
+    .footer-left {
+      display: flex;
+      gap: $spacing-md;
+    }
+    
+    .footer-right {
+      display: flex;
+      gap: $spacing-md;
+    }
+  }
+}
+
+// 模式提示區域
+.mode-notice {
+  margin-bottom: $spacing-lg;
+  padding: $spacing-md;
+  border-radius: $radius-lg;
+  border-left: 4px solid transparent;
+  position: relative;
+  transition: all 0.3s ease;
+  
+  // 根據模式設定不同的顏色
+  &[data-mode="live-api"] {
+    background: rgba(76, 175, 80, 0.08);
+    border-left-color: #4CAF50;
+    border: 1px solid rgba(76, 175, 80, 0.2);
+  }
+  
+  &[data-mode="azure-realtime"] {
+    background: rgba(33, 150, 243, 0.08);
+    border-left-color: #2196F3;
+    border: 1px solid rgba(33, 150, 243, 0.2);
+  }
+  
+  &[data-mode="stt-tts"] {
+    background: rgba(255, 152, 0, 0.08);
+    border-left-color: #FF9800;
+    border: 1px solid rgba(255, 152, 0, 0.2);
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+  }
+  
+  &__header {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+  }
+
+  &__icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+  
+  &__title {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    
+    strong {
+      color: var(--text-primary);
+    }
+  }
+
+  &__description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.4;
+    margin: 0;
+    padding-left: calc(1.2rem + #{$spacing-sm});
+  }
+}
+
+.settings-section {
+  margin-bottom: $spacing-xl;
+
+  h3 {
+    margin: 0 0 $spacing-sm 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+
+  &__description {
+    margin: 0 0 $spacing-md 0;
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}
+
+// 語調選擇的 radio group
+.radio-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-md;
+}
+
+.radio-option {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--accent-color);
+    background: rgba(66, 133, 244, 0.05);
+  }
+
+  input[type="radio"] {
+    margin: 0 $spacing-sm 0 0;
+    accent-color: var(--accent-color);
+  }
+
+  input[type="radio"]:checked + .radio-label {
+    color: var(--accent-color);
+    font-weight: 500;
+  }
+
+  .radio-label {
+    color: var(--text-primary);
+    font-size: 0.95rem;
+    user-select: none;
+  }
+}
+
+// 音色選擇
+.voice-options {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.voice-option {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: $spacing-md;
+  border: 1px solid var(--border-color);
+  border-radius: $radius-md;
+  transition: var(--transition);
+
+  &:hover {
+    border-color: var(--accent-color);
+    background: rgba(66, 133, 244, 0.05);
+  }
+
+  &__info {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    flex: 1;
+
+    input[type="radio"] {
+      margin: 0 $spacing-md 0 0;
+      accent-color: var(--accent-color);
+    }
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+
+    .voice-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .voice-description {
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+    }
+  }
+
+  input[type="radio"]:checked ~ &__details .voice-name {
+    color: var(--accent-color);
+  }
+}
+
+.voice-preview-btn {
+  background: transparent;
+  border: none;
+  padding: $spacing-xs;
+  cursor: pointer;
+  transition: var(--transition);
+  min-width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  
+  .play-icon-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-secondary);
+    border: 2px solid var(--border-color);
+    transition: all 0.2s ease;
+    color: var(--text-secondary);
+    
+    svg {
+      width: 20px;
+      height: 20px;
+      transition: transform 0.2s ease;
+    }
+  }
+
+  &:hover:not(:disabled) {
+    .play-icon-circle {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      color: white;
+      transform: scale(1.1);
+      box-shadow: 0 2px 8px rgba(66, 133, 244, 0.3);
+    }
+  }
+  
+  &.playing {
+    .play-icon-circle {
+      background: var(--accent-color);
+      border-color: var(--accent-color);
+      color: white;
+      animation: pulse 1.5s ease-in-out infinite;
+    }
+  }
+
+  &:disabled:not(.playing) {
+    opacity: 0.3;
+    cursor: not-allowed;
+    
+    .play-icon-circle {
+      background: var(--bg-tertiary);
+      border-color: var(--border-color);
+    }
+  }
+  
+  &:active:not(:disabled) {
+    .play-icon-circle {
+      transform: scale(0.95);
+    }
+  }
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(66, 133, 244, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(66, 133, 244, 0);
+  }
+}
+
+// 新增淡入淡出動畫
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeOutDown {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-20px);
+  }
+}
+
+// 載入動畫
+@keyframes shimmer {
+  0% {
+    background-position: -1000px 0;
+  }
+  100% {
+    background-position: 1000px 0;
+  }
+}
+
+// 按鈕樣式
+.btn {
+  padding: $spacing-sm $spacing-lg;
+  border: none;
+  border-radius: $radius-md;
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  min-width: 80px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: $spacing-xs;
+  
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    
+    &:hover {
+      transform: none;
+    }
+  }
+
+  &--primary {
+    background: var(--accent-color);
+    color: white;
+    box-shadow: 0 2px 4px rgba(66, 133, 244, 0.2);
+
+    &:hover:not(:disabled) {
+      background: var(--accent-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(66, 133, 244, 0.3);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(66, 133, 244, 0.4);
+    }
+  }
+
+  &--secondary {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+
+    &:hover:not(:disabled) {
+      background: var(--bg-secondary);
+      border-color: var(--border-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    }
+  }
+  
+  &--outline {
+    background: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    
+    &:hover:not(:disabled) {
+      color: var(--text-primary);
+      border-color: var(--accent-color);
+      background: rgba(66, 133, 244, 0.05);
+      transform: translateY(-1px);
+    }
+    
+    &:active:not(:disabled) {
+      transform: translateY(0);
+    }
+  }
+}
+
+// 動畫
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+// 模態框動畫增強
+.settings-modal {
+  animation: slideUp 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+// 動態內容過渡效果
+.settings-section {
+  opacity: 1;
+  transform: translateY(0);
+  transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+  
+  &.section-enter {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  
+  &.section-enter-active {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  &.section-exit {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+  
+  &.section-exit-active {
+    opacity: 0;
+    transform: translateY(-20px) scale(0.95);
+    max-height: 0;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+}
+
+// 模式特定的視覺提示
+.settings-section {
+  border-left: 3px solid transparent;
+  padding-left: $spacing-md;
+  
+  &[data-mode="live-api"] {
+    border-left-color: #4CAF50; // 綠色表示 Live API
+    
+    h3::before {
+      content: '🎤 ';
+    }
+  }
+  
+  &[data-mode="azure-realtime"] {
+    border-left-color: #2196F3; // 藍色表示 Azure
+    
+    h3::before {
+      content: '🧠 ';
+    }
+  }
+  
+  &[data-mode="stt-tts"] {
+    border-left-color: #FF9800; // 橙色表示 STT+TTS
+    
+    h3::before {
+      content: '💬 ';
+    }
+  }
+}
+
+// 設定項目的懸停效果增強
+.radio-option, .voice-option {
+  position: relative;
+  overflow: hidden;
+  
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(66, 133, 244, 0.08), transparent);
+    transition: left 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+  }
+  
+  &:hover::before {
+    left: 100%;
+  }
+  
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+  
+  &:active {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+}
+
+// 響應式設計
+@media (max-width: $breakpoint-mobile) {
+  .settings-modal {
+    width: 95%;
+    max-height: 95vh;
+
+    &__header {
+      padding: $spacing-md;
+      
+      .header-content {
+        .mode-indicator {
+          .mode-info {
+            .mode-description {
+              display: none; // 在小螢幕上隱藏描述
+            }
+          }
+        }
+      }
+    }
+
+    &__content {
+      padding: $spacing-md;
+      max-height: 70vh;
+    }
+    
+    &__footer {
+      flex-direction: column;
+      gap: $spacing-md;
+      
+      .footer-left,
+      .footer-right {
+        width: 100%;
+        justify-content: center;
+      }
+    }
+  }
+
+  .mode-notice {
+    &__description {
+      padding-left: 0;
+      margin-top: $spacing-xs;
+    }
+  }
+
+  .radio-group {
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+
+  .voice-option {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-sm;
+
+    &__info {
+      width: 100%;
+    }
+
+    .voice-preview-btn {
+      align-self: flex-end;
+    }
+  }
+  
+  .btn {
+    min-width: 100px;
+    padding: $spacing-md $spacing-lg;
+  }
+}
+
+// 模型選擇樣式
+.model-subsection {
+  margin-bottom: $spacing-lg;
+  
+  h4 {
+    margin: 0 0 $spacing-xs 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--text-primary);
+  }
+  
+  &__description {
+    margin: 0 0 $spacing-md 0;
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+    line-height: 1.3;
+  }
+  
+  .radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-sm;
+  }
+}
+
+.model-option {
+  padding: $spacing-md;
+  
+  .radio-content {
+    display: flex;
+    flex-direction: column;
+    gap: $spacing-xs;
+    flex: 1;
+  }
+  
+  .radio-label {
+    font-weight: 500;
+    color: var(--text-primary);
+  }
+  
+  .radio-description {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    line-height: 1.3;
+  }
+  
+  input[type="radio"]:checked ~ .radio-content .radio-label {
+    color: var(--accent-color);
+  }
+  
+  input[type="radio"]:checked ~ .radio-content .radio-description {
+    color: var(--text-primary);
+  }
+}

@@ -1,0 +1,409 @@
+@import '../../styles/variables.scss';
+
+.three-column-layout {
+  display: flex;
+  flex: 1;
+  width: 100%;
+  background: #f9fafb;
+  overflow: hidden;
+  transition: all 0.3s ease;
+
+  // 左側面板 - 聊天室列表 (20% 如同 chat.tsx)
+  .left-panel {
+    width: 20%;
+    min-width: 0;
+    background: white;
+    border-right: 1px solid #e5e7eb;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease;
+    position: relative;
+  }
+
+  // 中間面板 - 語音控制 (30% - 3/10 的比例)
+  .middle-panel {
+    width: 30%;
+    border-right: 1px solid #e5e7eb;
+    background: white;
+    transition: all 0.3s ease;
+    
+    // 當middle-panel同時也是voice-panel時，不需要額外的padding/alignment
+    &.voice-panel {
+      // voice-panel樣式由conversation-page.scss處理
+    }
+    
+    // 當middle-panel不是voice-panel時（預設狀態），才加上居中樣式
+    &:not(.voice-panel) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+  }
+
+  // 右側面板 - 轉錄顯示 (50% - 5/10 的比例，約等於 7/14)
+  .right-panel {
+    width: 50%;
+    background: white;
+    transition: all 0.3s ease;
+
+    // 當right-panel同時也是transcript-panel時，不需要額外的flex設定
+    &.transcript-panel {
+      // transcript-panel樣式由conversation-page.scss處理
+    }
+
+    // 當right-panel不是transcript-panel時（預設狀態），才加上flex設定
+    &:not(.transcript-panel) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  // 側邊欄收起時的樣式調整
+  &.sidebar-collapsed {
+    .left-panel {
+      width: 0;
+      min-width: 0;
+      border-right: none;
+      overflow: hidden;
+    }
+
+    .middle-panel {
+      width: 30%; // 中間面板保持 3 的比例
+    }
+
+    .right-panel {
+      width: 70%; // 右側面板保持 7 的比例
+    }
+  }
+
+  // 預設面板樣式（當沒有選擇聊天室時）
+  .default-panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    .default-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      color: #9ca3af;
+      text-align: center;
+      
+      .default-title {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #374151;
+        margin: 0;
+      }
+      
+      .default-subtitle {
+        font-size: 0.875rem;
+        color: #6b7280;
+        margin: 0;
+      }
+    }
+  }
+
+  .conversation-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // 防止 flex 子元素溢出
+    height: 100%;
+    position: relative;
+  }
+
+  // 響應式設計
+  @media (max-width: $breakpoint-tablet) {
+    .chat-sidebar-panel,
+    .debug-panel {
+      position: absolute;
+      height: 100%;
+      z-index: 100;
+
+      &.open {
+        box-shadow: var(--shadow);
+      }
+    }
+
+    .chat-sidebar-panel {
+      left: 0;
+    }
+
+    .debug-panel {
+      right: 0;
+    }
+  }
+}
+
+// Two Column Layout
+.two-column-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: $font-mono;
+  overflow: hidden;
+  position: relative;
+
+  .conversation-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0; // 防止 flex 子元素溢出
+    height: 100%;
+    position: relative;
+  }
+
+  // 側邊欄收合按鈕 - 隱藏
+  .sidebar-toggle-btn {
+    display: none; // 完全隱藏收合按鈕
+  }
+
+  // 隱藏 CollapsiblePanel 內建的切換按鈕
+  .hide-internal-toggle .panel-toggle {
+    display: none;
+  }
+
+  // 響應式設計
+  @media (max-width: $breakpoint-tablet) {
+    .chat-sidebar-panel {
+      position: absolute;
+      height: 100%;
+      z-index: 100;
+
+      &.open {
+        box-shadow: var(--shadow);
+      }
+
+      left: 0;
+    }
+
+    .sidebar-toggle-btn {
+      top: 80px; // 避開 header
+      height: 48px;
+      width: 28px;
+      
+      &.open {
+        left: 280px; // 稍微調整位置
+      }
+    }
+  }
+
+  @media (max-width: $breakpoint-mobile) {
+    .sidebar-toggle-btn {
+      &.open {
+        left: 260px; // 手機版再調整
+      }
+      
+      .icon {
+        width: 14px;
+        height: 14px;
+      }
+    }
+  }
+}
+
+// Header styles
+.app-header {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  height: 56px;
+  padding: 0 $spacing-md;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+
+  .header-left,
+  .header-right {
+    display: flex;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  .header-right {
+    justify-content: flex-end;
+  }
+
+  .header-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: $spacing-md;
+  }
+
+  .menu-button {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: $spacing-sm;
+    border-radius: $radius-sm;
+    transition: var(--transition);
+    
+    &:hover {
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    svg {
+      width: 20px;
+      height: 20px;
+    }
+  }
+
+  .app-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 0;
+  }
+
+  .icon-button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    cursor: pointer;
+    padding: $spacing-sm $spacing-md;
+    border-radius: $radius-sm;
+    transition: var(--transition);
+    font-family: inherit;
+    font-size: 14px;
+    
+    &:hover {
+      background-color: var(--bg-tertiary);
+      color: var(--text-primary);
+    }
+
+    svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      span {
+        display: none;
+      }
+      padding: $spacing-sm;
+    }
+  }
+
+  .connection-status {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    background: none;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+    padding: $spacing-xs $spacing-sm;
+    border-radius: $radius-sm;
+    cursor: pointer;
+    transition: var(--transition);
+    font-family: inherit;
+    font-size: 12px;
+
+    &.connected {
+      color: var(--success-color);
+      border-color: var(--success-color);
+      background-color: rgba(52, 168, 83, 0.1);
+
+      &:hover {
+        background-color: rgba(52, 168, 83, 0.2);
+      }
+    }
+
+    &.disconnected {
+      color: var(--error-color);
+      border-color: var(--error-color);
+      background-color: rgba(234, 67, 53, 0.1);
+
+      &:hover {
+        background-color: rgba(234, 67, 53, 0.2);
+      }
+    }
+
+    svg {
+      width: 14px;
+      height: 14px;
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      span {
+        display: none;
+      }
+      padding: $spacing-xs;
+    }
+  }
+
+  .session-timer {
+    display: flex;
+    align-items: center;
+    gap: $spacing-xs;
+    padding: $spacing-xs $spacing-sm;
+    background: rgba(255, 152, 0, 0.1);
+    border: 1px solid rgba(255, 152, 0, 0.3);
+    border-radius: $radius-sm;
+    font-size: 12px;
+    color: #ff9800;
+    animation: pulse 2s infinite;
+
+    .timer-label {
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .timer-value {
+      font-weight: 600;
+      font-family: $font-mono;
+      letter-spacing: 0.5px;
+    }
+
+    @keyframes pulse {
+      0% {
+        opacity: 0.8;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0.8;
+      }
+    }
+
+    @media (max-width: $breakpoint-mobile) {
+      .timer-label {
+        display: none;
+      }
+    }
+  }
+
+  .room-info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+
+    .room-name {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-primary);
+      margin: 0;
+    }
+
+    .room-mode {
+      font-size: 12px;
+      color: var(--text-secondary);
+      background-color: var(--bg-tertiary);
+      padding: 2px 8px;
+      border-radius: 12px;
+    }
+  }
+}
