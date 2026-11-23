@@ -1,13 +1,13 @@
 {
   "files": {
-    "main.css": "/realtime-voice-agent/static/css/main.1bf6f686.css",
-    "main.js": "/realtime-voice-agent/static/js/main.d687e322.js",
+    "main.css": "/realtime-voice-agent/static/css/main.281652af.css",
+    "main.js": "/realtime-voice-agent/static/js/main.6323829a.js",
     "index.html": "/realtime-voice-agent/index.html",
-    "main.1bf6f686.css.map": "/realtime-voice-agent/static/css/main.1bf6f686.css.map",
-    "main.d687e322.js.map": "/realtime-voice-agent/static/js/main.d687e322.js.map"
+    "main.281652af.css.map": "/realtime-voice-agent/static/css/main.281652af.css.map",
+    "main.6323829a.js.map": "/realtime-voice-agent/static/js/main.6323829a.js.map"
   },
   "entrypoints": [
-    "static/css/main.1bf6f686.css",
-    "static/js/main.d687e322.js"
+    "static/css/main.281652af.css",
+    "static/js/main.6323829a.js"
   ]
 }
