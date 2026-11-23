@@ -33,7 +33,7 @@ export const Header: React.FC<HeaderProps> = ({
       case 'live-api':
         return 'Gemini Live';
       case 'azure-realtime':
-        return 'OpenAI Realtime';
+        return 'Azure OpenAI Realtime';
       case 'stt-tts':
         return 'STT-TTS';
       default:

@@ -8,8 +8,8 @@ export const ChatList: React.FC = () => {
   if (chatRooms.length === 0) {
     return (
       <div className="chat-list-empty">
-        <p>尚無聊天室</p>
-        <p>點擊「新對話」開始</p>
+        <p>No chat rooms yet</p>
+        <p>Click “New Chat” to start</p>
       </div>
     );
   }

@@ -139,3 +139,19 @@ input, textarea, select {
 
   a { color: #0b6e4f; font-weight: 600; }
 }
+
+/* Phones: stack the three columns so every control (including New Chat) is reachable */
+@media (max-width: 720px) {
+  .app { height: auto; min-height: 100vh; overflow: visible; }
+  .three-column-layout { flex-direction: column !important; height: auto !important; overflow: visible !important; }
+  .three-column-layout .left-panel { width: 100% !important; max-width: none !important; min-width: 0 !important; max-height: 14rem; overflow-y: auto; border-right: 0 !important; border-bottom: 1px solid #e5e7eb; }
+  .three-column-layout .middle-panel { width: 100% !important; max-width: none !important; min-height: 18rem; flex: none !important; }
+  .three-column-layout .right-panel { width: 100% !important; max-width: none !important; flex: none !important; min-height: 24rem; }
+  .chat-sidebar-header { white-space: nowrap; }
+}
+@media (max-width: 720px) {
+  .app-header { gap: .5rem; padding-left: .75rem !important; padding-right: .75rem !important; }
+  .app-header .header-center { display: none !important; }
+  .app-header .app-title { font-size: 1rem !important; white-space: nowrap; }
+  .app-header .header-right { gap: .25rem; flex-shrink: 0; }
+}

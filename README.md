@@ -51,5 +51,17 @@ npm test          # 8 suites, 25 tests
 npm run build
 ```
 
-## My part
-I designed and built this prototype: the unified client layer over the two realtime APIs, the audio pipeline, and the chat-room / transcript UI. During the internship it was connected to internal service APIs for intent recognition and routing and used by the team as a testing platform; those integrations are not included here.
+## Credits and what I built
+This prototype starts from Google's [Live API Web Console](https://github.com/google-gemini/live-api-web-console) example (Apache 2.0). The Gemini Live client, the audio recorder/streamer and the AudioWorklets come from that example and keep Google's copyright headers; see [NOTICE](NOTICE).
+
+What I added on top of it:
+- **Azure OpenAI Realtime support** behind the same interface (`src/api/azure-realtime.ts`, `src/hooks/use-azure-realtime.ts`), so one UI can switch between Gemini Live and Azure.
+- **STT → LLM → TTS fallback mode** (`src/api/gemini-stt.ts`, `gemini-tts.ts`, `azure-chat.ts`, `src/audio/processor.ts`, `tts-player.ts`, `src/hooks/use-stt-conversation.ts`).
+- **One controller for all three modes** (`src/hooks/use-conversation-controller.ts`, `use-conversation-events.ts`).
+- **Chat rooms, saved transcripts and export** (`src/stores/`, `src/storage/`, `src/hooks/use-chat-manager.ts`, sidebar and transcript panel).
+- **Settings, persona and mode picker UI**, the **offline demo mode** (`src/api/mock-*.ts`, `demo-script.ts`) and the 25 unit tests.
+
+During the internship the prototype was also connected to internal service APIs for intent recognition and routing; those integrations are not included here.
+
+## License
+Apache License 2.0; see [LICENSE](LICENSE) and [NOTICE](NOTICE).

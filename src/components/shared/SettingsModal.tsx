@@ -87,7 +87,7 @@ export const SettingsModal: React.FC<SettingsModalProps> = ({
       icon: `${process.env.PUBLIC_URL}/images/mode-icons/live-api.png`
     },
     'azure-realtime': {
-      name: 'OpenAI Realtime',
+      name: 'Azure OpenAI Realtime',
       description: 'Enterprise voice streaming powered by Azure OpenAI Realtime API',
       color: '#2196F3',
       icon: `${process.env.PUBLIC_URL}/images/mode-icons/openai.svg`

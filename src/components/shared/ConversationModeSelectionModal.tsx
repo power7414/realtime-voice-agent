@@ -29,7 +29,7 @@ const MODE_OPTIONS: ModeOption[] = [
   },
   {
     type: 'azure-realtime',
-    title: 'OpenAI Realtime',
+    title: 'Azure OpenAI Realtime',
     iconSrc: `${process.env.PUBLIC_URL}/images/mode-icons/openai.svg`,
     colorClass: 'sky'
   },

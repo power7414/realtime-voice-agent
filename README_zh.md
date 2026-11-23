@@ -40,5 +40,17 @@ npm test          # 8 個測試套件、25 個測試
 npm run build
 ```
 
-## 我的部分
-這個原型由我設計與實作：兩種即時 API 的統一客戶端、音訊管線、聊天室與逐字稿介面。實習期間它接上內部服務 API 做意圖辨識與分流，並成為團隊持續使用的測試平台；那些內部整合不在本 repo。
+## 來源與我做的部分
+這個原型以 Google 的 [Live API Web Console](https://github.com/google-gemini/live-api-web-console) 範例（Apache 2.0）為基礎。Gemini Live 客戶端、音訊收音／播放與 AudioWorklet 來自該範例，保留 Google 的版權標頭，清單見 [NOTICE](NOTICE)。
+
+我在上面加的：
+- **Azure OpenAI Realtime 串接**，和 Gemini Live 共用同一個介面（`src/api/azure-realtime.ts`、`src/hooks/use-azure-realtime.ts`）。
+- **STT → LLM → TTS 備用模式**（`gemini-stt.ts`、`gemini-tts.ts`、`azure-chat.ts`、`processor.ts`、`tts-player.ts`、`use-stt-conversation.ts`）。
+- **三種模式共用的控制器**（`use-conversation-controller.ts`、`use-conversation-events.ts`）。
+- **多聊天室、逐字稿保存與匯出**（`src/stores/`、`src/storage/`、`use-chat-manager.ts`、側欄與逐字稿面板）。
+- **設定、角色與模式選擇介面**、**離線示範模式**（`mock-*.ts`、`demo-script.ts`）以及 25 個單元測試。
+
+實習期間它也接上了內部服務 API 做意圖辨識與分流；那些內部整合不在本 repo。
+
+## 授權
+Apache License 2.0，見 [LICENSE](LICENSE) 與 [NOTICE](NOTICE)。

@@ -1,0 +1,17 @@
+realtime-voice-agent
+Copyright 2025 PK Wu
+
+This project builds on Google's Live API Web Console example
+(https://github.com/google-gemini/live-api-web-console), Copyright 2024 Google LLC,
+licensed under the Apache License, Version 2.0. Files derived from it keep their
+original Google copyright headers:
+
+  src/api/gemini-live.ts
+  src/hooks/use-live-api.ts
+  src/audio/recorder.ts
+  src/audio/streamer.ts
+  src/audio/worklets/audio-processing.ts
+  src/audio/worklets/vol-meter.ts
+  src/utils/audio-context.ts
+  src/utils/audioworklet-registry.ts
+  src/components/audio-pulse/index.ts
